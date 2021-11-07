@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "*.jsp",
-        initParams = {@WebInitParam(name = "encoding", value = "EUC-KR")})
+        initParams = {@WebInitParam(name = "encoding", value = "UTF-8")})
 public class CharacterEncodingFilter implements Filter {
 
     private String boardEncoding;
