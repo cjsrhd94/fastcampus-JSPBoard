@@ -1,5 +1,7 @@
 package com.fastcampus.controller;
 
+import com.fastcampus.biz.board.BoardDAO;
+import com.fastcampus.biz.board.BoardVO;
 import com.fastcampus.biz.user.UserDAO;
 import com.fastcampus.biz.user.UserVO;
 
@@ -56,6 +58,24 @@ public class DispatcherServlet extends HttpServlet {
             System.out.println("로그아웃 기능 처리");
         } else if (path.equals("/insertBoard.do")) {
             System.out.println("글 등록 기능 처리");
+
+            // 1. 사용자 입력정보 추출
+            String title = request.getParameter("title");
+            String writer = request.getParameter("writer");
+            String content = request.getParameter("content");
+
+            // 2. DB 연동 처리
+            BoardVO vo = new BoardVO();
+            vo.setTitle(title);
+            vo.setWriter(writer);
+            vo.setContent(content);
+
+            BoardDAO boardDAO = new BoardDAO();
+            boardDAO.insertBoard(vo);
+
+            // 3. 화면 네비게이션
+            response.sendRedirect("getBoardList.jsp");
+
         } else if (path.equals("/updateBoard.do")) {
             System.out.println("글 수정 기능 처리");
         } else if (path.equals("/deleteBoard.do")) {
