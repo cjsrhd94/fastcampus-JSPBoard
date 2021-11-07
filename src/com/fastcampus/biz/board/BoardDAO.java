@@ -20,6 +20,7 @@ public class BoardDAO {
 	private final String BOARD_INSERT = "insert into board(seq, title, writer, content) " + 
                                         "values ((select nvl(max(seq), 0) + 1 from board), ?, ?, ?)";
 	private final String BOARD_UPDATE = "update board set title = ?, content = ? where seq = ?";
+	private final String BOARD_UPDATE_CNT = "update board set cnt = cnt + 1 where seq = ?";
 	private final String BOARD_DELETE = "delete board where seq = ?";
 	private final String BOARD_GET    = "select * from board where seq = ?";
 	private final String BOARD_LIST_T   = "select * from board where title like '%'||?||'%' order by seq desc";
@@ -81,13 +82,18 @@ public class BoardDAO {
 			stmt.setInt(1, vo.getSeq());
 			rs = stmt.executeQuery();
 			if(rs.next()) {
+				// 검색 결과가 있는 경우 조회수를 증가시킨다.
+				stmt = conn.prepareStatement(BOARD_UPDATE_CNT);
+				stmt.setInt(1, vo.getSeq());
+				stmt.executeUpdate();
+
 				board = new BoardVO();
 				board.setSeq(rs.getInt("SEQ"));
 				board.setTitle(rs.getString("TITLE"));
 				board.setWriter(rs.getString("WRITER"));
 				board.setContent(rs.getString("CONTENT"));
 				board.setRegDate(rs.getDate("REGDATE"));
-				board.setCnt(rs.getInt("CNT"));
+				board.setCnt(rs.getInt("CNT") + 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
