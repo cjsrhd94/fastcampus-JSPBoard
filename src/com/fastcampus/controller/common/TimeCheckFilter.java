@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "*.do")
+@WebFilter(urlPatterns = "*.jsp")
 public class TimeCheckFilter implements Filter {
 
     public TimeCheckFilter() {
