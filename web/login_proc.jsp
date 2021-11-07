@@ -18,6 +18,9 @@
     // 3. 응답 화면 구성
     if (user != null) {
         response.sendRedirect("getBoardList.jsp");
+
+        // 로그인 성공시 세션(내장 객체)에 사용자 정보를 저장한다.
+        session.setAttribute("user", user);
     } else {
         response.sendRedirect("login.html");
     }

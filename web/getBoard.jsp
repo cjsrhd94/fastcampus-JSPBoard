@@ -1,5 +1,6 @@
 <%@ page import="com.fastcampus.biz.board.BoardVO" %>
 <%@ page import="com.fastcampus.biz.board.BoardDAO" %>
+<%@ page import="com.fastcampus.biz.user.UserVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -56,8 +57,13 @@
         </table>
     </form>
     <hr>
-    <a href="insertBoard.html">글등록</a>&nbsp;&nbsp;&nbsp;
+    <a href="insertBoard.html">글등록</a>
+    <%
+        UserVO user = (UserVO) session.getAttribute("user");
+        if (user.getRole().equals("ADMIN")){
+    %>
     <a href="deleteBoard_proc.jsp?seq=<%=board.getSeq()%>">글삭제</a>&nbsp;&nbsp;&nbsp;
+    <%}%>
     <a href="getBoardList.jsp">글목록</a>
 </center>
 </body>

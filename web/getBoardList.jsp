@@ -1,26 +1,33 @@
 <%@ page import="com.fastcampus.biz.board.BoardVO" %>
 <%@ page import="com.fastcampus.biz.board.BoardDAO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.fastcampus.biz.user.UserVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    // 1. 사용자 입력정보 추출
-    String searchCondition = request.getParameter("searchCondition");
-    String searchKeyword = request.getParameter("searchKeyword");
+    // 0. 세션 체크
+    UserVO user = (UserVO) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.html");
+    } else {
 
-    // Null Check
-    if (searchCondition == null) searchCondition = "TITLE";
-    if (searchKeyword == null) searchKeyword = "";
+        // 1. 사용자 입력정보 추출
+        String searchCondition = request.getParameter("searchCondition");
+        String searchKeyword = request.getParameter("searchKeyword");
 
-    // 2. DB 연동 처리
-    BoardVO vo = new BoardVO();
-    vo.setSearchCondition(searchCondition);
-    vo.setSearchKeyword(searchKeyword);
+        // Null Check
+        if (searchCondition == null) searchCondition = "TITLE";
+        if (searchKeyword == null) searchKeyword = "";
 
-    BoardDAO boardDAO = new BoardDAO();
-    List<BoardVO> boardList = boardDAO.getBoardList(vo);
+        // 2. DB 연동 처리
+        BoardVO vo = new BoardVO();
+        vo.setSearchCondition(searchCondition);
+        vo.setSearchKeyword(searchKeyword);
 
-    //3. 응답 화면 구성성
+        BoardDAO boardDAO = new BoardDAO();
+        List<BoardVO> boardList = boardDAO.getBoardList(vo);
+
+        //3. 응답 화면 구성성
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,7 +38,7 @@
 <body>
 <center>
     <h1>게시 글 목록</h1>
-    <h3>테스터님 로그인 환영합니다...<a href="logout_proc.do">LOG-OUT</a></h3>
+    <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout_proc.do">LOG-OUT</a></h3>
 
     <!-- 검색 시작 -->
     <form action="getBoardList.jsp" method="post">
@@ -80,6 +87,6 @@
 </center>
 </body>
 </html>
-
+<%}%>
 
 
