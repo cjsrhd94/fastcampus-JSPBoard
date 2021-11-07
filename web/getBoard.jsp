@@ -57,7 +57,7 @@
         </table>
     </form>
     <hr>
-    <a href="insertBoard.html">글등록</a>
+    <a href="insertBoard.jsp">글등록</a>
     <%
         UserVO user = (UserVO) session.getAttribute("user");
         if (user.getRole().equals("ADMIN")){

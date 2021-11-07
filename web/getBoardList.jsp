@@ -38,7 +38,7 @@
 <body>
 <center>
     <h1>게시 글 목록</h1>
-    <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout_proc.do">LOG-OUT</a></h3>
+    <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout_proc.jsp">LOG-OUT</a></h3>
 
     <!-- 검색 시작 -->
     <form action="getBoardList.jsp" method="post">
@@ -83,7 +83,7 @@
 
     </table>
     <br>
-    <a href="insertBoard.html">새글 등록</a>
+    <a href="insertBoard.jsp">새글 등록</a>
 </center>
 </body>
 </html>
