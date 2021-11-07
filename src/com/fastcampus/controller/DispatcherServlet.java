@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "*.do")
 public class DispatcherServlet extends HttpServlet {
@@ -46,10 +47,10 @@ public class DispatcherServlet extends HttpServlet {
 
             // 3. 응답 화면 구성
             if (user != null) {
-                response.sendRedirect("getBoardList.jsp");
-
                 // 로그인 성공시 세션(내장 객체)에 사용자 정보를 저장한다.
                 session.setAttribute("user", user);
+                // 로그인 후 글 목록을 생성해준다.
+                response.sendRedirect("getBoardList.do");
             } else {
                 response.sendRedirect("login.html");
             }
@@ -74,7 +75,7 @@ public class DispatcherServlet extends HttpServlet {
             boardDAO.insertBoard(vo);
 
             // 3. 화면 네비게이션
-            response.sendRedirect("getBoardList.jsp");
+            response.sendRedirect("getBoardList.do");
 
         } else if (path.equals("/updateBoard.do")) {
             System.out.println("글 수정 기능 처리");
@@ -84,6 +85,34 @@ public class DispatcherServlet extends HttpServlet {
             System.out.println("글 상세 조회 기능 처리");
         } else if (path.equals("/getBoardList.do")) {
             System.out.println("글 목록 검색 기능 처리");
+
+            // 0. 세션 체크
+            UserVO user = (UserVO) session.getAttribute("user");
+            if (user == null) {
+                response.sendRedirect("login.html");
+            } else {
+
+                // 1. 사용자 입력정보 추출
+                String searchCondition = request.getParameter("searchCondition");
+                String searchKeyword = request.getParameter("searchKeyword");
+
+                // Null Check
+                if (searchCondition == null) searchCondition = "TITLE";
+                if (searchKeyword == null) searchKeyword = "";
+
+                // 2. DB 연동 처리
+                BoardVO vo = new BoardVO();
+                vo.setSearchCondition(searchCondition);
+                vo.setSearchKeyword(searchKeyword);
+
+                BoardDAO boardDAO = new BoardDAO();
+                List<BoardVO> boardList = boardDAO.getBoardList(vo);
+
+                // 3. 검색 결과를 JSP 파일에서 사용할 수 있도록 session이나 request에 등록한다.
+                session.setAttribute("boardList", boardList);
+                response.sendRedirect("getBoardList.jsp");
+
+            }
         } else {
             System.out.println("path에 해당하는 로직이 없습니다.");
         }

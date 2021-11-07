@@ -5,29 +5,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    // 0. 세션 체크
+    // 1. 세션에 등록된 검색 결과를 꺼낸다.
     UserVO user = (UserVO) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.html");
-    } else {
+    List<BoardVO> boardList = (List) session.getAttribute("boardList");
 
-        // 1. 사용자 입력정보 추출
-        String searchCondition = request.getParameter("searchCondition");
-        String searchKeyword = request.getParameter("searchKeyword");
-
-        // Null Check
-        if (searchCondition == null) searchCondition = "TITLE";
-        if (searchKeyword == null) searchKeyword = "";
-
-        // 2. DB 연동 처리
-        BoardVO vo = new BoardVO();
-        vo.setSearchCondition(searchCondition);
-        vo.setSearchKeyword(searchKeyword);
-
-        BoardDAO boardDAO = new BoardDAO();
-        List<BoardVO> boardList = boardDAO.getBoardList(vo);
-
-        //3. 응답 화면 구성성
+    // 2. 응답 화면 구성
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -41,7 +23,7 @@
     <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout_proc.jsp">LOG-OUT</a></h3>
 
     <!-- 검색 시작 -->
-    <form action="getBoardList.jsp" method="post">
+    <form action="getBoardList.do" method="post">
         <table border="1" cellpadding="0" cellspacing="0" width="700">
             <tr>
                 <td align="right">
@@ -87,6 +69,4 @@
 </center>
 </body>
 </html>
-<%}%>
-
 
