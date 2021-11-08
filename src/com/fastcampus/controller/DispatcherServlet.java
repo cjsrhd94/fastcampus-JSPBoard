@@ -57,6 +57,11 @@ public class DispatcherServlet extends HttpServlet {
 
         } else if (path.equals("/logout.do")) {
             System.out.println("로그아웃 기능 처리");
+
+            session.invalidate();
+
+            response.sendRedirect("login.html");
+
         } else if (path.equals("/insertBoard.do")) {
             System.out.println("글 등록 기능 처리");
 

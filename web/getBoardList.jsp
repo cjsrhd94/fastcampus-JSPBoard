@@ -20,7 +20,7 @@
 <body>
 <center>
     <h1>게시 글 목록</h1>
-    <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout_proc.jsp">LOG-OUT</a></h3>
+    <h3><font color="red"><%=user.getName()%></font>님 로그인 환영합니다...<a href="logout.do">LOG-OUT</a></h3>
 
     <!-- 검색 시작 -->
     <form action="getBoardList.do" method="post">
