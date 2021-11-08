@@ -83,6 +83,21 @@ public class DispatcherServlet extends HttpServlet {
             System.out.println("글 삭제 기능 처리");
         } else if (path.equals("/getBoard.do")) {
             System.out.println("글 상세 조회 기능 처리");
+
+            // 1. 사용자 입력정보 추출
+            String seq = request.getParameter("seq");
+
+            // 2. DB 연동 처리
+            BoardVO vo = new BoardVO();
+            vo.setSeq(Integer.parseInt(seq));
+
+            BoardDAO boardDAO = new BoardDAO();
+            BoardVO board = boardDAO.getBoard(vo);
+
+            // 3. 검색 결과를 JSP 파일에서 사용할 수 있도록 session이나 request에 등록한다.
+            session.setAttribute("board", board);
+            response.sendRedirect("getBoard.jsp");
+
         } else if (path.equals("/getBoardList.do")) {
             System.out.println("글 목록 검색 기능 처리");
 
